@@ -16,11 +16,12 @@ namespace AuthenticationApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly UserContext _context;
-        UserService _userService = new UserService();
+        UserService _userService;
 
-        public UsersController(UserContext context)
+        public UsersController(UserContext context, IConfiguration configuration)
         {
             _context = context;
+            _userService = new UserService(configuration);
         }
 
         // GET: api/Users
@@ -28,7 +29,7 @@ namespace AuthenticationApi.Controllers
         
         public async Task<ActionResult<string>> GetUsers(string UserName, string Password)
         {
-            var data = _context.Users.AsQueryable();
+            var data = _context.Users;
             var temp = from user in data
                        where user.UserName == UserName
                               select user;
@@ -37,7 +38,7 @@ namespace AuthenticationApi.Controllers
             {
                 try
                 {
-                    return _userService.Login(Password, (User)temp);
+                    return _userService.Login(Password, (User)temp.First());
                 }
                 catch (Exception e)
                 {
