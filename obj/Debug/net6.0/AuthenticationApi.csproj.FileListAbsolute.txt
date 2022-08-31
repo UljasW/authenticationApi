@@ -260,3 +260,8 @@ C:\Programmering\ASP.NET\AuthenticationApi\AuthenticationApi\bin\Debug\net6.0\ru
 C:\Programmering\ASP.NET\AuthenticationApi\AuthenticationApi\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\Programmering\ASP.NET\AuthenticationApi\AuthenticationApi\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Programmering\ASP.NET\AuthenticationApi\AuthenticationApi\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+C:\Programmering\ASP.NET\AuthenticationApi\AuthenticationApi\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Programmering\ASP.NET\AuthenticationApi\AuthenticationApi\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+C:\Programmering\ASP.NET\AuthenticationApi\AuthenticationApi\bin\Debug\net6.0\Scrutor.dll
+C:\Programmering\ASP.NET\AuthenticationApi\AuthenticationApi\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
+C:\Programmering\ASP.NET\AuthenticationApi\AuthenticationApi\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll

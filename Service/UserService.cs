@@ -15,9 +15,7 @@ namespace AuthenticationApi.Service
         }
         public string Login(string password, User user)
         {
-            string _newHash = BCrypt.Net.BCrypt.HashPassword(password, user.PasswordSalt);
-
-            if (_newHash.SequenceEqual(user.PasswordHash))
+            if (Identify(password,user))
             {
                 return CreateToken(user);
             }
@@ -36,6 +34,26 @@ namespace AuthenticationApi.Service
             };
 
             return user;
+        }
+
+        public bool DeleteUser(string password, User user)
+        {
+            bool del = false;
+            try
+            {
+                del = Identify(password, user);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return del;
+        }
+
+        private bool Identify(string password, User user)
+        {
+            string _newHash = BCrypt.Net.BCrypt.HashPassword(password, user.PasswordSalt);
+            return _newHash.SequenceEqual(user.PasswordHash);
         }
 
         private string CreateToken(User user)

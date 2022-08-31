@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using AuthenticationApi.Models;
 using AuthenticationApi.Service;
 using System.Collections;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AuthenticationApi.Controllers
 {
@@ -25,20 +28,20 @@ namespace AuthenticationApi.Controllers
         }
 
         // GET: api/Users
-        [HttpGet]
+        [HttpGet("Login")]
         
         public async Task<ActionResult<string>> GetUsers(string UserName, string Password)
         {
             var data = _context.Users;
-            var temp = from user in data
+            var query = from user in data
                        where user.UserName == UserName
                               select user;
 
-            if (temp != null)
+            if (query.Count() > 0)
             {
                 try
                 {
-                    return _userService.Login(Password, (User)temp.First());
+                    return _userService.Login(Password, (User)query.First());
                 }
                 catch (Exception e)
                 {
@@ -49,25 +52,18 @@ namespace AuthenticationApi.Controllers
             }
             else return BadRequest("User not found");
         }
-       
 
-        // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<string>> GetUser() { 
+        [HttpGet("GetAllUsers"), Authorize]
 
-            return "";
+        public IEnumerable<User> GetAllUsers()
+        {
+            var data = _context.Users;
+            var query = from user in data select user;
 
+            return query;
         }
 
-        // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-
-     
-
-        // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("Registrer")]
         public async Task<ActionResult<User>> PostUser(UserDto userDto)
         {
             User user = _userService.Register(userDto);
@@ -90,6 +86,36 @@ namespace AuthenticationApi.Controllers
             }
        
             return CreatedAtAction("GetUser", new { id = userDto.UserName }, user);
+        }
+
+        // DELETE: api/DataModels/5
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> DeleteUser(string UserName, string Password)
+        {
+            var data = _context.Users;
+            var query = from user in data
+                       where user.UserName == UserName
+                       select user;
+
+            
+
+            if (query.Count() > 0)
+            {
+                bool del = _userService.DeleteUser(Password, (User)query.First());
+                if (del)
+                {
+                    var dataModel = await _context.Users.FindAsync(UserName);
+                    _context.Users.Remove(dataModel);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    return BadRequest("Wrong password");
+                }
+            }
+            else return BadRequest("User not found");
+
+            return NoContent();
         }
 
         private bool UserExists(string id)
