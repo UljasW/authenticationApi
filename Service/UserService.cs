@@ -33,6 +33,10 @@ namespace AuthenticationApi.Service
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(userDto.Password, salt)
             };
 
+            if (userDto.UserName == "admin")
+            user.Role = "admin";            
+            else user.Role = "User";
+
             return user;
         }
 

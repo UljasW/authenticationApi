@@ -15,5 +15,7 @@
 
         public string PasswordSalt { get; set; }
 
+        public string Role { get; set; }
+
     }
 }

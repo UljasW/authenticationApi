@@ -53,7 +53,7 @@ namespace AuthenticationApi.Controllers
             else return BadRequest("User not found");
         }
 
-        [HttpGet("GetAllUsers"), Authorize]
+        [HttpGet("GetAllUsers"), Authorize(Roles = "admin")]
 
         public IEnumerable<User> GetAllUsers()
         {
